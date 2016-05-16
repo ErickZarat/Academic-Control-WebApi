@@ -7,13 +7,25 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+var actividades = require('./routes/actividad');
+var detalleAlumnos = require('./routes/detalleAlumno');
+var detalleMaterias = require('./routes/detalleMateria');
+var notas = require ('./routes/nota');
 var rols = require('./routes/rol');
+var usuarios = require('./routes/usuario');
+var bimestres = require('./routes/bimestre');
+var grados = require('./routes/grado');
+var secciones = require('./routes/seccion');
+var materias = require('./routes/materia');
+var planificaciones = require('./routes/planificacion');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -25,7 +37,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/', actividades);
+app.use('/', detalleAlumnos);
+app.use('/', detalleMaterias);
+app.use('/', notas);
 app.use('/', rols);
+app.use('/', usuarios);
+app.use('/', bimestres);
+app.use('/', grados);
+app.use('/', secciones);
+app.use('/', materias);
+app.use('/', planificaciones);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
