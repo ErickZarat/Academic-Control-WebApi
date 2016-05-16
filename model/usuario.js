@@ -35,6 +35,30 @@ usuarioModel.getUsuario = function(idUsuario, callback) {
 	});
 }
 
+usuarioModel.getProfesores = function(callback) {
+	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idRol = 1'; 
+	
+	connection.query(sql, function(error, resultado){
+		if(error) {
+			throw error;
+		} else {
+			callback(null, resultado);
+		}
+	});
+}
+
+usuarioModel.getAlumnos = function(callback) {
+	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idRol = 2'; 
+	
+	connection.query(sql, function(error, resultado){
+		if(error) {
+			throw error;
+		} else {
+			callback(null, resultado);
+		}
+	});
+}
+
 usuarioModel.insertUsuario = function(usuario, callback){
 	if(connection) {
 		connection.query('INSERT INTO usuario SET ?', usuario, 

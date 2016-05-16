@@ -13,6 +13,26 @@ router.get('/api/usuario/',function(peticion, respuesta) {
 	});
 });
 
+router.get('/api/profesor/',function(peticion, respuesta) {
+	Usuario.getProfesores(function(error, usuarios) {
+		if(typeof usuarios !=='undefined') {
+			respuesta.json(usuarios);
+		}else{
+			respuesta.json({"Mensaje": "No hay usuarios"});
+		}
+	});
+});
+
+router.get('/api/alumno/',function(peticion, respuesta) {
+	Usuario.getAlumnos(function(error, usuarios) {
+		if(typeof usuarios !=='undefined') {
+			respuesta.json(usuarios);
+		}else{
+			respuesta.json({"Mensaje": "No hay usuarios"});
+		}
+	});
+});
+
 router.get('/api/usuario/:idUsuario', function(peticion, respuesta) {
 	var idUsuario = peticion.params.idUsuario;
 	if(!isNaN(idUsuario)){
