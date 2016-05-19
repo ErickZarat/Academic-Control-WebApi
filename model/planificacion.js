@@ -22,6 +22,19 @@ planificacionModel.getPlanificaciones = function(callback) {
 	}
 }
 
+planificacionModel.getPlanificacionesProfesor = function (idProfesor, callback){
+	if (connection){
+		var sql = 'SELECT p.idPlanificacion,p.idBimestre,p.idUsuario,p.competencia,p.idMateria,m.nombreMateria,p.idGrado,g.nombreGrado FROM planificacion p, materia m, grado g where p.idMateria = m.idMateria and p.idGrado=g.idGrado and p.idUsuario=?;';
+		connection.query(sql, idProfesor, function(error, resultado){
+			if (error){
+				throw error;
+			} else {
+				callback(null, resultado)
+			}
+		});
+	}
+}
+
 planificacionModel.getPlanificacion = function(idPlanificacion, callback) {
 	if(connection) {
 		var sql = 'SELECT * FROM planificacion WHERE idPlanificacion=' + idPlanificacion;

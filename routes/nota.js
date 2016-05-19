@@ -28,6 +28,21 @@ router.get('/api/nota/:idNota', function(peticion, respuesta) {
 	}
 });
 
+
+router.get ('/api/nota/usuario/:idUsuario', function(peticion, respuesta){
+	var idUsuario = peticion.params.idUsuario;
+	if(!isNaN (idUsuario)){
+		Nota.getNotaUsuario(idUsuario, function(error, notausuario){
+			if (typeof notausuario !== 'undefined'){
+				respuesta.json(notausuario);
+			} else {
+				respuesta.json({"Mensaje": "no existe nota"});
+			}
+		});
+	}else {
+		respuesta.json({"Mensaje":"el id debe ser numerico"});
+	}
+});
 router.post('/api/nota', function(peticion, respuesta) {
 	var nota = {
 		idNota : null,

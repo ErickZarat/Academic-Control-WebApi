@@ -35,6 +35,19 @@ notaModel.getNota = function(idNota, callback) {
 	}
 }
 
+notaModel.getNotaUsuario =  function(idUsuario, callback){
+	if (connection){
+		var sql ='SELECT n.idNota,n.punteo,n.idActividad,n.idDetalleAlumno,a.tareas FROM nota n, usuario u, detalleAlumno d, actividad a where a.idActividad=n.idActividad and u.idUsuario=d.idUsuario and d.idDetalleAlumno = n.idDetalleAlumno and u.idUsuario=?;';
+		connection.query(sql,idUsuario, function(error, resultado){
+			if (error){
+				throw error;
+			} else {
+				callback(null, resultado);
+			}
+		});
+	}
+}
+
 notaModel.insertNota = function(nota, callback) {
 	if(connection) {
 		connection.query('INSERT INTO nota Set ?', nota,

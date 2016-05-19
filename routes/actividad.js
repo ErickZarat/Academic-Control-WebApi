@@ -28,6 +28,16 @@ router.get('/api/actividad/:idActividad', function(peticion, respuesta) {
 	}
 });
 
+router.get('/api/actividad/planificacion/:idPlanificacion', function(peticion, respuesta){
+	Actividad.getActividadPlan(peticion.params.idPlanificacion, function(error, actividades){
+		if(typeof actividades !== 'undefined'){
+			respuesta.json(actividades);
+		} else {
+			respuesta.json({"Mensaje" : "No existe actividad"});
+		}
+	});	
+});
+
 router.post('/api/actividad', function(peticion, respuesta) {
 	var actividad = {
 		idActividad : null,

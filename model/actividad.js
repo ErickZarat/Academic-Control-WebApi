@@ -22,6 +22,19 @@ actividadModel.getActividades = function(callback) {
 	}
 }
 
+actividadModel.getActividadPlan = function(idPlanificacion, callback){
+	if(connection){
+		var sql ='SELECT a.idActividad,a.contenido,a.fechaInicial,a.fechaFinal,a.materiales,a.tareas,a.ponderacion,a.logro,a.idPlanificacion FROM actividad a, planificacion p where a.idPlanificacion = p.idPlanificacion and a.idPlanificacion=?;';
+		connection.query(sql,idPlanificacion, function(error, resultado) {
+			if(error) {
+				throw error;
+			} else {
+				callback(null, resultado);
+			}
+		});
+	}
+}
+
 actividadModel.getActividad = function(idActividad, callback) {
 	if(connection) {
 		var sql = 'SELECT * FROM actividad WHERE idActividad=' + idActividad;

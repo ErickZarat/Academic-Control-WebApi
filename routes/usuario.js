@@ -23,6 +23,22 @@ router.get('/api/profesor/',function(peticion, respuesta) {
 	});
 });
 
+router.get('/api/profesor/:idUsuario',function(peticion, respuesta){
+	var idUsuario = peticion.params.idUsuario;
+
+	if (!isNaN(idUsuario)){
+		Usuario.getProfesor(idUsuario, function(error, usuarios){
+			if (typeof usuarios !== 'undefined'){
+				respuesta.json(usuarios);
+			} else{
+				respuesta.json({"Mensaje":"No hay usuarios"});
+			}
+		});
+	} else {
+		respuesta.json({"Mensaje":"el id debe ser numerico"})
+	}
+});
+
 router.get('/api/alumno/',function(peticion, respuesta) {
 	Usuario.getAlumnos(function(error, usuarios) {
 		if(typeof usuarios !=='undefined') {

@@ -13,6 +13,16 @@ router.get('/api/planificacion/',function(peticion, respuesta) {
 	});
 });
 
+router.get('/api/planificacion/profesor/:idProfesor', function(peticion, respuesta){
+	Planificacion.getPlanificacionesProfesor(peticion.params.idProfesor, function(error, planificaciones){
+		if (typeof planificaciones !== 'undefined'){
+			respuesta.json(planificaciones);
+		} else {
+			respuesta.json({"mensaje": "el Profesor no tiene planificaciones o no es profesor"})
+		}
+	});
+});
+
 router.get('/api/planificacion/:idPlanificacion', function(peticion, respuesta) {
 	var idPlanificacion = peticion.params.idPlanificacion;
 	if(!isNaN(idPlanificacion)) {

@@ -47,6 +47,19 @@ usuarioModel.getProfesores = function(callback) {
 	});
 }
 
+usuarioModel.getProfesor = function(idUsuario, callback){
+
+	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idRol = 1 and u.idUsuario='+idUsuario; 
+
+	connection.query(sql, function(error, resultado){
+		if (error){
+			throw error;
+		} else {
+			callback(null, resultado);
+		}
+	});
+}
+
 usuarioModel.getAlumnos = function(callback) {
 	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idRol = 2'; 
 	
