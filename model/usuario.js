@@ -1,13 +1,27 @@
 var mysql = require('mysql');
 var parametros = {
-	host : 'localhost',
-	user : 'root',
-	password : 'Progra15',
-	database : 'controlAcademico'
+	host : 'sql5.freemysqlhosting.net',
+	user : 'sql5121144',
+	password : 'TmeqnJ6K5X',
+	database : 'sql5121144'
 }
 
 var connection = mysql.createConnection(parametros);
 var usuarioModel = {};
+
+usuarioModel.autenticar = function(usuario, callback){
+	if (connection) {
+		connection.query('SELECT * FROM usuario WHERE nick=? and contrasena=?',
+			[usuario.nick, usuario.contrasena],
+			function(error, resultado){
+				if(error){
+					throw error;
+				}else {
+					callback(null, resultado[0]);
+				}
+			});
+	}
+}
 
 usuarioModel.getUsuarios = function(callback) {
 	if(connection) {

@@ -1,88 +1,75 @@
-create table rol (
-	idRol int not null primary key auto_increment,
-    nombreRol varchar(45) not null
+CREATE TABLE rol (
+	idRol INT NOT NULL PRIMARY KEY,
+    nombreRol VARCHAR(45) NOT NULL
 );
 
-create table usuario (
-	idUsuario int not null primary key auto_increment,
-    nombre varchar(45) not null,
-    apellido varchar(45) not null,
-    nick varchar(45) not null,
-    contrasena varchar(45) not null,
-    idRol int not null,
-    foreign key (idRol) references rol(idRol)
+CREATE TABLE usuario (
+	idUsuario INT NOT NULL PRIMARY KEY,
+    nombre VARCHAR(45) NOT NULL,
+    apellido VARCHAR(45) NOT NULL,
+    nick VARCHAR(45) NOT NULL,
+    contrasena VARCHAR(45) NOT NULL,
+    idRol INT REFERENCES rol(idRol)
 );
 
 
-create table materia (
-	idMateria int not null primary key auto_increment,
-    nombreMateria varchar(45) not null
+CREATE TABLE materia (
+	idMateria INT NOT NULL PRIMARY KEY,
+    nombreMateria VARCHAR(45) NOT NULL
 );
 
-create table detalleMateria(
-	idDetalle int not null primary key auto_increment,
-    idMateria int not null,
-    foreign key (idMateria) references materia(idMateria),
-    idUsuario int not null,
-    foreign key (idUsuario) references usuario(idUsuario)
+CREATE TABLE detalleMateria(
+	idDetalle INT NOT NULL PRIMARY KEY,
+    idMateria INT REFERENCES materia(idMateria),
+    idUsuario INT REFERENCES usuario(idUsuario)
 );
 
-create table bimestre(
-	idBimestre int not null primary key auto_increment,
-    nombreBimestre varchar (45) not null
+CREATE TABLE bimestre(
+	idBimestre INT NOT NULL PRIMARY KEY,
+    nombreBimestre VARCHAR (45) NOT NULL
 );
 
-create table grado(
-	idGrado int not null primary key auto_increment,
-    nombreGrado varchar (45) not null
+CREATE TABLE grado(
+	idGrado INT NOT NULL PRIMARY KEY,
+    nombreGrado VARCHAR (45) NOT NULL
 );
 
-create table seccion(
-	idSeccion int not null primary key auto_increment,
-    nombreSeccion varchar(45) not null
+CREATE TABLE seccion(
+	idSeccion INT NOT NULL PRIMARY KEY,
+    nombreSeccion VARCHAR(45) NOT NULL
 );
 
-create table planificacion(
-	idPlanificacion int not null primary key auto_increment,
-    idBimestre int not null,
-    foreign key (idBimestre) references bimestre(idBimestre),
-    idUsuario int not null,
-    foreign key (idUsuario) references usuario(idUsuario),
-    competencia varchar(200) not null,
-    idMateria int not null,
-    foreign key (idMateria) references materia(idMateria),
-    idGrado int not null,
-    foreign key (idGrado) references grado (idGrado)
+CREATE TABLE planificacion(
+	idPlanificacion INT NOT NULL PRIMARY KEY,
+    idBimestre INT REFERENCES bimestre(idBimestre),
+    idUsuario INT REFERENCES usuario(idUsuario),
+    competencia VARCHAR(200) NOT NULL,
+    idMateria INT REFERENCES materia(idMateria),
+    idGrado INT REFERENCES grado (idGrado)
 );
 
-create table actividad(
-	idActividad int not null primary key auto_increment,
-    contenido varchar (200) not null,
-    fechaInicial  datetime not null,
-    fechaFinal dateTime not null,
-    materiales  varchar (200) not null,
-    tareas  varchar (200) not null,
-    ponderacion  varchar (200) not null,
-    logro  varchar (200) not null,
-    idPlanificacion int not null,
-    foreign key (idPlanificacion) references planificacion(idPlanificacion)
+CREATE TABLE actividad(
+	idActividad INT NOT NULL PRIMARY KEY,
+    contenido VARCHAR (200) NOT NULL,
+    fechaInicial  DATETIME NOT NULL,
+    fechaFinal DATETIME NOT NULL,
+    materiales  VARCHAR (200) NOT NULL,
+    tareas  VARCHAR (200) NOT NULL,
+    ponderacion  VARCHAR (200) NOT NULL,
+    logro  VARCHAR (200) NOT NULL,
+    idPlanificacion INT REFERENCES planificacion(idPlanificacion)
 );
 
-create table detalleAlumno(
-	idDetalleAlumno int not null primary key auto_increment,
-    idUsuario int not null,
-    foreign key (idUsuario) references usuario(idUsuario),
-    idGrado int not null,
-    foreign key (idGrado) references grado(idGrado),
-    idSeccion int not null,
-    foreign key (idSeccion) references seccion(idSeccion)
+CREATE TABLE detalleAlumno(
+	idDetalleAlumno INT NOT NULL PRIMARY KEY,
+    idUsuario INT REFERENCES usuario(idUsuario),
+    idGrado INT REFERENCES grado(idGrado),
+    idSeccion INT REFERENCES seccion(idSeccion)
 );
 
-create table nota(
-	idNota int not null primary key auto_increment,
-    punteo int not null,
-    idActividad int not null,
-    foreign key (idActividad) references actividad(idActividad),
-    idDetalleAlumno int not null,
-    foreign key (idDetalleAlumno) references detalleAlumno(idDetalleAlumno)
+CREATE TABLE nota(
+	idNota INT NOT NULL PRIMARY KEY,
+    punteo INT NOT NULL,
+    idActividad INT REFERENCES actividad(idActividad),
+    idDetalleAlumno INT REFERENCES detalleAlumno(idDetalleAlumno)
 );

@@ -13,6 +13,20 @@ router.get('/api/usuario/',function(peticion, respuesta) {
 	});
 });
 
+router.post('/api/usuario/autenticar', function(peticion, respuesta){
+	var usuario = {
+		nick:peticion.body.nick,
+		contrasena:peticion.body.contrasena
+	}
+	Usuario.autenticar(usuario, function(error, usr){
+		if (typeof usr !== undefined){
+			respuesta.json(usr);
+		} else {
+			respuesta.json({"Mensaje":"El nick o la contrasena no estan registrados"});
+		}
+	});
+});
+
 router.get('/api/profesor/',function(peticion, respuesta) {
 	Usuario.getProfesores(function(error, usuarios) {
 		if(typeof usuarios !=='undefined') {
