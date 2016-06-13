@@ -1,17 +1,16 @@
 var mysql = require('mysql');
 var parametros = {
-	host : 'sql5.freemysqlhosting.net',
-	user : 'sql5121144',
-	password : 'TmeqnJ6K5X',
-	database : 'sql5121144'
+	host : 'localhost',
+	user : 'root',
+	password : 'Progra15',
+	database : 'controlAcademico'
 }
-
 var connection = mysql.createConnection(parametros);
 var planificacionModel = {};
 
 planificacionModel.getPlanificaciones = function(callback) {
 	if(connection) {
-		connection.query('SELECT * FROM planificacion',
+		connection.query('SELECT * FROM planificacion p, usuario u, grado g, materia m, bimestre b, rol r WHERE u.idUsuario = p.idUsuario AND p.idGrado = g.idGrado AND m.idMateria = p.idMateria AND b.idBimestre = p.idBimestre AND r.idRol = u.idRol' ,
 		function(error, resultados) {
 			if(error) {
 				throw error;
@@ -24,7 +23,7 @@ planificacionModel.getPlanificaciones = function(callback) {
 
 planificacionModel.getPlanificacionesProfesor = function (idProfesor, callback){
 	if (connection){
-		var sql = 'SELECT p.idPlanificacion,p.idBimestre,p.idUsuario,p.competencia,p.idMateria,m.nombreMateria,p.idGrado,g.nombreGrado FROM planificacion p, materia m, grado g where p.idMateria = m.idMateria and p.idGrado=g.idGrado and p.idUsuario=?;';
+		var sql = 'SELECT * FROM planificacion p, usuario u, grado g, materia m, bimestre b, rol r WHERE u.idUsuario = p.idUsuario AND p.idGrado = g.idGrado AND m.idMateria = p.idMateria AND b.idBimestre = p.idBimestre AND r.idRol = u.idRol and p.idUsuario=?;';
 		connection.query(sql, idProfesor, function(error, resultado){
 			if (error){
 				throw error;
@@ -37,7 +36,7 @@ planificacionModel.getPlanificacionesProfesor = function (idProfesor, callback){
 
 planificacionModel.getPlanificacion = function(idPlanificacion, callback) {
 	if(connection) {
-		var sql = 'SELECT * FROM planificacion WHERE idPlanificacion=' + idPlanificacion;
+		var sql = 'SELECT * FROM planificacion p, usuario u, grado g, materia m, bimestre b, rol r WHERE u.idUsuario = p.idUsuario AND p.idGrado = g.idGrado AND m.idMateria = p.idMateria AND b.idBimestre = p.idBimestre AND r.idRol = u.idRol AND idPlanificacion=' + idPlanificacion;
 		connection.query(sql, function(error, resultado) {
 			if(error) {
 				throw error;

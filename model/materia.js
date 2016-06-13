@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var parametros = {
-	host : 'sql5.freemysqlhosting.net',
-	user : 'sql5121144',
-	password : 'TmeqnJ6K5X',
-	database : 'sql5121144'
+	host : 'localhost',
+	user : 'root',
+	password : 'Progra15',
+	database : 'controlAcademico'
 }
 
 var connection = mysql.createConnection(parametros);

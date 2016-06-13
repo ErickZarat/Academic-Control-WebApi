@@ -13,6 +13,21 @@ router.get('/api/nota/',function(peticion, respuesta) {
 	});
 });
 
+router.get('/api/nota/actividad/:idActividad', function (peticion, respuesta){
+	var idActividad = peticion.params.idActividad;
+	if(!isNaN(idActividad)){
+		Nota.getNotabyActividad(idActividad, function(error, notas){
+			if(typeof notas !== 'undefined' && notas.length > 0) {
+				respuesta.json(notas);
+			} else {
+				respuesta.json({"Mensaje" : "No existen notas para esta actividad"});
+			}
+		});
+	} else {
+		respuesta.json({"Mensaje":"el id debe ser numerico"})
+	}
+});
+
 router.get('/api/nota/:idNota', function(peticion, respuesta) {
 	var idNota = peticion.params.idNota;
 	if(!isNaN(idNota)) {

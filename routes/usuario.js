@@ -13,6 +13,16 @@ router.get('/api/usuario/',function(peticion, respuesta) {
 	});
 });
 
+router.get('/api/usuario/detalle',function(peticion, respuesta) {
+	Usuario.getUsuariosDetalle(function(error, usuarios) {
+		if(typeof usuarios !=='undefined') {
+			respuesta.json(usuarios);
+		}else{
+			respuesta.json({"Mensaje": "No hay usuarios"});
+		}
+	});
+});
+
 router.post('/api/usuario/autenticar', function(peticion, respuesta){
 	var usuario = {
 		nick:peticion.body.nick,
@@ -42,7 +52,7 @@ router.get('/api/profesor/:idUsuario',function(peticion, respuesta){
 
 	if (!isNaN(idUsuario)){
 		Usuario.getProfesor(idUsuario, function(error, usuarios){
-			if (typeof usuarios !== 'undefined'){
+			if (typeof usuarios !== undefined){
 				respuesta.json(usuarios);
 			} else{
 				respuesta.json({"Mensaje":"No hay usuarios"});
@@ -68,7 +78,7 @@ router.get('/api/usuario/:idUsuario', function(peticion, respuesta) {
 	if(!isNaN(idUsuario)){
 		Usuario.getUsuario(idUsuario, function(error, dato){
 			if(typeof dato !== 'undefined' && dato.length > 0){
-				respuesta.json(dato);
+				respuesta.json(dato[0]);
 			} else {
 				respuesta.json({"Mensaje" : "No existe Usuario"});
 			}

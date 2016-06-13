@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var parametros = {
-	host : 'sql5.freemysqlhosting.net',
-	user : 'sql5121144',
-	password : 'TmeqnJ6K5X',
-	database : 'sql5121144'
+	host : 'localhost',
+	user : 'root',
+	password : 'Progra15',
+	database : 'controlAcademico'
 }
 
 var connection = mysql.createConnection(parametros);
@@ -11,7 +11,7 @@ var notaModel = {};
 
 notaModel.getNotas = function(callback) {
 	if(connection) {
-		connection.query('SELECT * FROM nota',
+		connection.query('SELECT * FROM nota n, actividad a, detalleAlumno d, grado g, seccion s, usuario u where a.idActividad=n.idActividad and u.idUsuario=d.idUsuario and d.idDetalleAlumno = n.idDetalleAlumno and g.idGrado = d.idGrado and d.idSeccion = s.idSeccion',
 		function(error, resultados) {
 			if(error) {
 				throw error;
@@ -22,9 +22,23 @@ notaModel.getNotas = function(callback) {
 	}
 }
 
+notaModel.getNotabyActividad = function(idActividad, callback){
+	if (connection){
+		connection.query('SELECT * FROM nota n, actividad a, detalleAlumno d, grado g, seccion s, usuario u where a.idActividad=n.idActividad and u.idUsuario=d.idUsuario and d.idDetalleAlumno = n.idDetalleAlumno and g.idGrado = d.idGrado and d.idSeccion = s.idSeccion and a.idActividad='+idActividad,
+		function(error, resultado){
+			if (error){
+				throw error;
+			} else {
+				callback(null, resultado);
+			}
+		});
+
+	}
+}
+
 notaModel.getNota = function(idNota, callback) {
 	if(connection) {
-		var sql = 'SELECT * FROM nota WHERE idNota=' + idNota;
+		var sql = 'SELECT * FROM nota n, actividad a, detalleAlumno d, grado g, seccion s, usuario u where a.idActividad=n.idActividad and u.idUsuario=d.idUsuario and d.idDetalleAlumno = n.idDetalleAlumno and g.idGrado = d.idGrado and d.idSeccion = s.idSeccion and idNota=' + idNota;
 		connection.query(sql, function(error, resultado) {
 			if(error) {
 				throw error;
@@ -37,7 +51,7 @@ notaModel.getNota = function(idNota, callback) {
 
 notaModel.getNotaUsuario =  function(idUsuario, callback){
 	if (connection){
-		var sql ='SELECT n.idNota,n.punteo,n.idActividad,n.idDetalleAlumno,a.tareas FROM nota n, usuario u, detalleAlumno d, actividad a where a.idActividad=n.idActividad and u.idUsuario=d.idUsuario and d.idDetalleAlumno = n.idDetalleAlumno and u.idUsuario=?;';
+		var sql ='SELECT * FROM nota n, actividad a, detalleAlumno d, grado g, seccion s, usuario u where a.idActividad=n.idActividad and u.idUsuario=d.idUsuario and d.idDetalleAlumno = n.idDetalleAlumno and g.idGrado = d.idGrado and d.idSeccion = s.idSeccion and u.idUsuario=?;';
 		connection.query(sql,idUsuario, function(error, resultado){
 			if (error){
 				throw error;

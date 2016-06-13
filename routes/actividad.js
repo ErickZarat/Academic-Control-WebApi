@@ -52,7 +52,7 @@ router.post('/api/actividad', function(peticion, respuesta) {
 	};
 	
 	Actividad.insertActividad(actividad, function(error, data) {
-		if(data && data.insertActividad > 0) {
+		if(data !== undefined && data.insertActividad != 0) {
 			respuesta.json({"mensaje" : "Actividad Ingresada Correctamente"});
 		} else {
 			respuesta.json({"mensaje" : "No se ingreso la Actividad"});

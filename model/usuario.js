@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var parametros = {
-	host : 'sql5.freemysqlhosting.net',
-	user : 'sql5121144',
-	password : 'TmeqnJ6K5X',
-	database : 'sql5121144'
+	host : 'localhost',
+	user : 'root',
+	password : 'Progra15',
+	database : 'controlAcademico'
 }
 
 var connection = mysql.createConnection(parametros);
@@ -17,7 +17,15 @@ usuarioModel.autenticar = function(usuario, callback){
 				if(error){
 					throw error;
 				}else {
-					callback(null, resultado[0]);
+					var res = {};
+					if (resultado[0] == undefined){
+						res.login = false;
+					} else {
+						res = resultado[0];
+						res.login = true;	
+					}
+					
+					callback(null, res);
 				}
 			});
 	}
@@ -25,7 +33,20 @@ usuarioModel.autenticar = function(usuario, callback){
 
 usuarioModel.getUsuarios = function(callback) {
 	if(connection) {
-		connection.query('SELECT * FROM usuario',
+		connection.query('SELECT * FROM usuario u , rol r WHERE u.idRol = r.idRol',
+		function(error, resultados) {
+			if(error) {
+				throw error;
+			} else {
+				callback(null, resultados);
+			}
+		});	
+	}
+}
+
+usuarioModel.getUsuariosDetalle = function(callback) {
+	if(connection) {
+		connection.query('SELECT * FROM usuario u , rol r, detalleAlumno d WHERE u.idRol = r.idRol and d.idUsuario=u.idUsuario',
 		function(error, resultados) {
 			if(error) {
 				throw error;
@@ -38,7 +59,7 @@ usuarioModel.getUsuarios = function(callback) {
 
 usuarioModel.getUsuario = function(idUsuario, callback) {
 	var id = connection.escape(idUsuario);
-	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idUsuario = ' + id; 
+	var sql = 'SELECT * FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idUsuario = ' + id; 
 	
 	connection.query(sql, function(error, resultado){
 		if(error) {
@@ -50,7 +71,7 @@ usuarioModel.getUsuario = function(idUsuario, callback) {
 }
 
 usuarioModel.getProfesores = function(callback) {
-	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idRol = 1'; 
+	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idRol = 1'; 
 	
 	connection.query(sql, function(error, resultado){
 		if(error) {
@@ -75,7 +96,7 @@ usuarioModel.getProfesor = function(idUsuario, callback){
 }
 
 usuarioModel.getAlumnos = function(callback) {
-	var sql = 'SELECT u.idUsuario, u.nombre, u.apellido, u.nick, u.contrasena, u.idRol, u.idRol, rol.nombreRol FROM usuario u INNER JOIN rol rol ON u.idRol = rol.idRol where u.idRol = 2'; 
+	var sql = 'SELECT * FROM usuario u, rol r, detalleAlumno d, grado g, seccion s WHERE u.idRol = 2 and d.idUsuario = u.idUsuario and g.idGrado = d.idGrado and u.idRol = r.idRol and s.idSeccion = d.idSeccion'; 
 	
 	connection.query(sql, function(error, resultado){
 		if(error) {

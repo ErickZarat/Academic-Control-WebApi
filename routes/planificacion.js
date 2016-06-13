@@ -28,7 +28,7 @@ router.get('/api/planificacion/:idPlanificacion', function(peticion, respuesta) 
 	if(!isNaN(idPlanificacion)) {
 		Planificacion.getPlanificacion(idPlanificacion, function(error, planificacion) {
 			if(typeof planificacion !== 'undefined' && planificacion.length > 0) {
-				respuesta.json(planificacion);
+				respuesta.json(planificacion[0]);
 			} else {
 				respuesta.json({"Mensaje" : "No existe planificacion"});
 			}
